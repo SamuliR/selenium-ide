@@ -24,6 +24,7 @@ import { modifier, parse } from 'modifier-keys'
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 import CommandName from '../CommandName'
 import MoreButton from '../ActionButtons/More'
+import PlayStep from '../ActionButtons/PlayStep'
 import ListMenu, { ListMenuItem, ListMenuSeparator } from '../ListMenu'
 import MultilineEllipsis from '../MultilineEllipsis'
 import { withOnContextMenu } from '../ContextMenu'
@@ -362,11 +363,11 @@ class TestRow extends React.Component {
           })}
         >
 
-        {//TODO: make this svg and figure out how to get it to build/assets/media/selenium-ide.xxxx
+        {//TODO: fix text alignment
           this.props.lastRow === false ?
-          <img className='playStep'
+          <PlayStep
+            className='playStep'
             onClick={() => { this.props.executeCommand(this.props.command)}}
-            src='./assets/media/play_button.png'
           /> : null}
           {commandIndentation}
           <CommandName>{this.props.command.displayedName}</CommandName>
