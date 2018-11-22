@@ -1260,6 +1260,15 @@ class CommandList {
         description: 'Waits x amount of seconds before continuing execution.',
         target: ArgTypes.waitTime,
       },
+    ],
+    [
+      'clickRandom',
+      {
+        name: 'click random',
+        type: TargetTypes.LOCATOR,
+        description: 'Finds all the elements matching target and clicks a random one',
+        target: ArgTypes.locator,
+      },
     ]
   ])
 

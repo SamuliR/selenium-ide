@@ -871,6 +871,22 @@ Selenium.prototype.doDoubleClickAt = function(locator, coordString) {
   bot.action.doubleClick(element, coords)
 }
 
+Selenium.prototype.doClickRandom = function(locator, coordString) {
+  /**
+   * Clicks on a link, button, checkbox or radio button. If the click action
+   * causes a new page to load (like a link usually does), call
+   * waitForPageToLoad.
+   *
+   * @param locator an element locator
+   * @param coordString specifies the x,y position (i.e. - 10,20) of the mouse
+   *      event relative to the element returned by the locator.
+   *
+   */
+  let element = this.browserbot.locateRandomElementByCss(locator)
+  let coords = getCoords(element, coordString)
+  bot.action.click(element, coords)
+}
+
 Selenium.prototype.doContextMenuAt = function(locator, coordString) {
   /**
    * Simulates opening the context menu for the specified element (as might happen if the user "right-clicked" on the element).

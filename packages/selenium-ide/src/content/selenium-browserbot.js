@@ -2328,6 +2328,12 @@ BrowserBot.prototype.locateElementByCss = function(locator, document) {
   return null
 }
 
+BrowserBot.prototype.locateRandomElementByCss = function(locator, document) {
+  let elements = bot.locators.findElements({ css: locator }, document)
+  if (elements.length != 0) return elements[(Math.random() * (elements.length - 0 + 1) ) << 0]
+  return null
+}
+
 /* prompt */
 BrowserBot.prototype.cancelNextPrompt = function() {
   return this.setNextPromptResult(null)
