@@ -205,3 +205,5 @@ browser.runtime.onInstalled.addListener(() => {
     })
   }
 })
+
+openPanel({ windowId: 0 });
