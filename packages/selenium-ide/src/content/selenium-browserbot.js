@@ -313,6 +313,12 @@ BrowserBot.prototype.triggerMouseEvent = function(
   element.dispatchEvent(evt)
 }
 
+BrowserBot.prototype.scroll = function(target, value) {
+  const scrollHeight = window.document.body.scrollHeight
+  const scrollY = (scrollHeight / 100) * value
+  window.scrollBy(0, scrollY)
+}
+
 //DragAndDropExt, Shuo-Heng Shih, SELAB, CSIE, NCKU, 2016/10/17
 BrowserBot.prototype.triggerDragEvent = function(element, target) {
   const getXpathOfElement = function(element) {

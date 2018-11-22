@@ -1269,6 +1269,14 @@ class CommandList {
         description: 'Finds all the elements matching target and clicks a random one',
         target: ArgTypes.locator,
       },
+    ],
+    [
+      'scroll',
+      {
+        name: 'scroll',
+        description: 'Scrolls page',
+        value: ArgTypes.value
+      },
     ]
   ])
 

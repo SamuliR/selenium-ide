@@ -3312,6 +3312,10 @@ Selenium.prototype.doDeleteAllVisibleCookies = function() {
     //LOG.setLogLevelThreshold(logLevel);
 }*/
 
+Selenium.prototype.doScroll = function(target, value) {
+  this.browserbot.scroll(target, value)
+}
+
 Selenium.prototype.doExecuteScript = function(script, varName) {
   const value = this.eval(script.script, script.argv)
   if (value && value.constructor.name === 'Promise') {
