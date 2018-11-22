@@ -1253,6 +1253,14 @@ class CommandList {
         target: ArgTypes.conditionalExpression,
       },
     ],
+    [
+      'sleep',
+      {
+        name: 'sleep',
+        description: 'Waits x amount of seconds before continuing execution.',
+        target: ArgTypes.waitTime,
+      },
+    ]
   ])
 
   @computed

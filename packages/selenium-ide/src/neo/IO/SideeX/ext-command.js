@@ -535,6 +535,12 @@ export default class ExtCommand {
     return Promise.resolve()
   }
 
+  doSleep(time) {
+    return new Promise(function(resolve) {
+      setTimeout(resolve, time)
+    })
+  }
+
   async convertToQuerySelector(locator) {
     let querySelector
     try {
@@ -728,6 +734,7 @@ export default class ExtCommand {
       case 'setSpeed':
       case 'store':
       case 'close':
+      case 'sleep':
         return true
       default:
         return false
