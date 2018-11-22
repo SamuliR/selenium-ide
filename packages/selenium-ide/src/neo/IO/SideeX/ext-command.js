@@ -535,9 +535,9 @@ export default class ExtCommand {
     return Promise.resolve()
   }
 
-  doSleep(time) {
+  doSleep(target, value) {
     return new Promise(function(resolve) {
-      setTimeout(resolve, time)
+      setTimeout(resolve, value * 1000)
     })
   }
 

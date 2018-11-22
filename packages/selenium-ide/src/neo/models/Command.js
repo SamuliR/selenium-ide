@@ -1258,7 +1258,7 @@ class CommandList {
       {
         name: 'sleep',
         description: 'Waits x amount of seconds before continuing execution.',
-        target: ArgTypes.waitTime,
+        value: ArgTypes.waitTime
       },
     ],
     [
