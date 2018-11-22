@@ -172,3 +172,13 @@
 .test-table tr .buttons > .active {
   opacity: 1;
 }
+
+.playStep {
+  min-width: 10px;
+  max-width: 10px;
+  margin-right: 20px;
+}
+
+.playStep:active {
+  transform: scale(1.5)
+}

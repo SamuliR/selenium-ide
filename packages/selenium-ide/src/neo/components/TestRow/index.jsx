@@ -264,7 +264,7 @@ class TestRow extends React.Component {
           <ListMenuSeparator />
           <ListMenuItem
             onClick={() => {
-              this.addCommand(this.props.index)
+              this.addCommand(this.props.index+1)
             }}
           >
             Insert new command
@@ -361,6 +361,13 @@ class TestRow extends React.Component {
             cell__alternate: this.props.command.comment,
           })}
         >
+
+        {//TODO: make this svg and figure out how to get it to build/assets/media/selenium-ide.xxxx
+          this.props.lastRow === false ?
+          <img className='playStep'
+            onClick={() => { this.props.executeCommand(this.props.command)}}
+            src='./assets/media/play_button.png'
+          /> : null}
           {commandIndentation}
           <CommandName>{this.props.command.displayedName}</CommandName>
         </td>

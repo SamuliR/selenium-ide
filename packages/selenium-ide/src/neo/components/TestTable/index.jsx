@@ -135,6 +135,7 @@ export default class TestTable extends React.Component {
                       clearAllCommands={this.props.clearAllCommands}
                       setSectionFocus={UiState.setSectionFocus}
                       level={this.commandLevels[index]}
+                      lastRow={false}
                     />
                   ))
                   .concat(
@@ -152,6 +153,7 @@ export default class TestTable extends React.Component {
                       moveSelection={UiState.selectCommandByIndex}
                       pasteFromClipboard={UiState.pasteFromClipboard}
                       setSectionFocus={UiState.setSectionFocus}
+                      lastRow={true}
                     />
                   )
               : null}
