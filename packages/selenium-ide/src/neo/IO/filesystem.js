@@ -77,6 +77,21 @@ export function saveProject(_project) {
   UiState.saved()
 }
 
+export function sendProject(_project) {
+  const project = _project.toJS()
+  console.log(beautify(JSON.stringify(project), { indent_size: 2 }))
+  /*
+  fetch('https://', {
+    method: 'POST',
+    body: beautify(JSON.stringify(project), { indent_size: 2 }),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(res => res.text()) //DELETE
+  .then(body => console.log("body", body)) //DELETE
+  .catch(error => console.log('Failed to send project:', error))
+  */
+}
+
 function downloadProject(project) {
   return exportProject(project).then(snapshot => {
     if (snapshot) {

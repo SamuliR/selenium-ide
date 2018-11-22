@@ -25,6 +25,7 @@ import NewButton from '../ActionButtons/New'
 import OpenButton from '../ActionButtons/Open'
 import SaveButton from '../ActionButtons/Save'
 import MoreButton from '../ActionButtons/More'
+import SendButton from '../ActionButtons/Send'
 import ListMenu, { ListMenuItem } from '../ListMenu'
 import { showChangelog } from '../Changelog'
 import './style.css'
@@ -44,6 +45,7 @@ export default class ProjectHeader extends React.Component {
     load: PropTypes.func,
     save: PropTypes.func,
     new: PropTypes.func,
+    send: PropTypes.func
   }
   handleKeyDown(e) {
     if (e.key === 'Enter') {
@@ -82,6 +84,9 @@ export default class ProjectHeader extends React.Component {
             data-place="left"
             unsaved={this.props.changed}
             onClick={this.props.save}
+          />
+          <SendButton
+            onClick={this.props.send}
           />
           <ListMenu
             width={250}

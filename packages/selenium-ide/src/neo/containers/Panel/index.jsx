@@ -47,7 +47,7 @@ import '../../styles/resizer.css'
 import { isProduction, isTest, userAgent } from '../../../common/utils'
 import Logger from '../../stores/view/Logs'
 
-import { loadProject, saveProject, loadJSProject } from '../../IO/filesystem'
+import { loadProject, saveProject, loadJSProject, sendProject } from '../../IO/filesystem'
 
 if (!isTest) {
   const api = require('../../../api')
@@ -303,6 +303,7 @@ export default class Panel extends React.Component {
                 }}
                 load={loadProject.bind(undefined, this.state.project)}
                 save={() => saveProject(this.state.project)}
+                send={() => sendProject(this.state.project)}
                 new={this.loadNewProject.bind(this)}
               />
               <div

@@ -182,3 +182,7 @@
 .si-stop1::before {
   content: '\e924';
 }
+
+.si-send::before {
+  content: '\f1d9';
+}
