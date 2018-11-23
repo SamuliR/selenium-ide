@@ -32,7 +32,6 @@ import SuiteDropzone from '../../components/SuiteDropzone'
 import PauseBanner from '../../components/PauseBanner'
 import ProjectHeader from '../../components/ProjectHeader'
 import Navigation from '../Navigation'
-import Editor from '../Editor'
 import Console from '../Console'
 import Modal from '../Modal'
 import Changelog from '../../components/Changelog'
@@ -46,6 +45,8 @@ import '../../styles/layout.css'
 import '../../styles/resizer.css'
 import { isProduction, isTest, userAgent } from '../../../common/utils'
 import Logger from '../../stores/view/Logs'
+
+import EditorTabs from '../../components/EditorTabs'
 
 import { loadProject, saveProject, loadJSProject, sendProject } from '../../IO/filesystem'
 
@@ -325,7 +326,7 @@ export default class Panel extends React.Component {
                     suites={this.state.project.suites}
                     duplicateTest={this.state.project.duplicateTestCase}
                   />
-                  <Editor
+                  <EditorTabs
                     url={this.state.project.url}
                     urls={this.state.project.urls}
                     setUrl={this.state.project.setUrl}
