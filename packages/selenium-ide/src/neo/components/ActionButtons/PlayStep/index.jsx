@@ -18,7 +18,6 @@
 import React from 'react'
 import ActionButton from '../ActionButton'
 import classNames from 'classnames'
-import './style.css'
 
 export default class PlayStep extends React.Component {
   render() {

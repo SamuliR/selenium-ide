@@ -362,33 +362,37 @@ class TestRow extends React.Component {
             cell__alternate: this.props.command.comment,
           })}
         >
-
-        {//TODO: fix text alignment
-          this.props.lastRow === false ?
+        {this.props.lastRow === false ?
           <PlayStep
-            className='playStep'
+            className='play-step'
             onClick={() => { this.props.executeCommand(this.props.command)}}
           /> : null}
-          {commandIndentation}
-          <CommandName>{this.props.command.displayedName}</CommandName>
+          <div className='row-name-container'>
+            {commandIndentation}
+            <CommandName>{this.props.command.displayedName}</CommandName>
+          </div>
         </td>
         <td
           className={classNames({
             cell__alternate: this.props.command.comment,
           })}
         >
+        <div className='row-target-container'>
           <MultilineEllipsis lines={3}>
             {this.props.command.target}
           </MultilineEllipsis>
+        </div>
         </td>
         <td
           className={classNames({
             cell__alternate: this.props.command.comment,
           })}
         >
+        <div className='row-value-container'>
           <MultilineEllipsis lines={3}>
             {this.props.command.value}
           </MultilineEllipsis>
+        </div>
         </td>
         <td className="buttons">
           {!this.props.isPristine && !this.props.readOnly ? listMenu : <div />}

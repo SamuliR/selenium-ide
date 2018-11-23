@@ -30,7 +30,6 @@ export default class SendButton extends React.Component {
         {...props}
         className={classNames(
           'si-send',
-          { pulse: this.props.unsaved },
           this.props.className
         )}
       /> // eslint-disable-line react/prop-types
