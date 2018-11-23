@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Editor from '../../containers/Editor'
-import FakeEditor from './FakeEditor'
+import StepEditor from 'step-editor'
 
 import './style.css'
 
@@ -12,40 +12,32 @@ export default class EditorTabs extends Component {
       currentTab: 0,
       tabs: [
         {
-          name: 'Editor',
+          name: 'Selenium Editor',
         },
         {
-          name: 'FakeEditor',
+          name: 'DnD',
         }
       ]
     }
   }
 
   render() {
-    if(Object.keys(this.props) === 0 ){
-      return (
-        <div>
-          Loading..
-        </div>
-      )
-    }
-    console.log(this.props)
     return (
       <div className='EditorTabs'>
-        <div className='tab-buttons-container'>
+        <div className='buttons-container'>
           {this.state.tabs.map((tab, index) => (
             <div
               className='tab'
               key={index}
               onClick={() => this.setState({ currentTab: index })}
-              style={{ backgroundColor: index === this.state.currentTab ? '#F8F8F8' : null, paddingBottom: 11}}
+              style={{ backgroundColor: index === this.state.currentTab ? '#F8F8F8' : null}}
             >
               {tab.name}
             </div>
           ))}
         </div>
-        <div className='tab-editor-container'>
-          {this.state.tabs[this.state.currentTab].name === 'Editor' ?
+        <div className='editor-container'>
+          {this.state.tabs[this.state.currentTab].name === 'Selenium Editor' ?
             <Editor
             url={this.props.url}
             urls={this.props.urls}
@@ -54,7 +46,7 @@ export default class EditorTabs extends Component {
             callstackIndex={this.props.callstackIndex}
           />
           :
-          <FakeEditor />
+          <StepEditor />
           }
         </div>
       </div>

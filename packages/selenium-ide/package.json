@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "env NODE_ENV=test webpack-dev-server --hot",
-    "build": "rm -rf build && env NODE_ENV=production webpack && cp src/neo/assets/images/play_button.png build/assets/media/",
+    "build": "rm -rf build && env NODE_ENV=production webpack",
     "build-dev": "webpack",
     "build-chrome": "./build.sh build ../../selenium-ide.pem 1>/dev/null && mkdir -p dist && mv build.crx dist/selenium-ide.crx && echo \"Wrote dist/selenium-ide.crx\"",
     "build-firefox": "web-ext sign -s build -a dist --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET --id=$(cat ../../.web-extension-id)",
@@ -77,6 +77,7 @@
     "react-transition-group": "^2.2.1",
     "scroll-into-view-if-needed": "2",
     "selianize": "^3.5.0-alpha.0",
+    "step-editor": "https://github.com/SamuliR/StepEditor",
     "string-natural-compare": "^2.0.2",
     "styled-components": "^2.1.2",
     "ua-parser-js": "^0.7.17",
