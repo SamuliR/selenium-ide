@@ -11,9 +11,9 @@
 
 .editor .test-table-body {
   flex-grow: 1;
-  min-height: 150px;
 }
 .editor .command-form {
   flex-shrink: 1;
-  min-height: 168px;
+  margin-bottom: 5%;
+  margin-top: 1.2%;
 }

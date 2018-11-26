@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import UiState from '../../stores/view/UiState'
 import Editor from '../../containers/Editor'
 import StepEditor from 'step-editor'
 
@@ -22,6 +23,11 @@ export default class EditorTabs extends Component {
   }
 
   render() {
+    if(this.state.currentTab === 1){
+      UiState.minimizeConsole();
+    } else {
+      UiState.restoreConsoleSize();
+    }
     return (
       <div className='EditorTabs'>
         <div className='buttons-container'>
