@@ -60,21 +60,18 @@ if (userAgent.os.name === 'Windows') {
   require('../../styles/conditional/button-direction.css')
 }
 
-const project = observable(new ProjectStore(''))
+const project = observable(new ProjectStore('Default Project'))
 
 UiState.setProject(project)
 
 if (isProduction) {
-  createDefaultSuite(project, { suite: '', test: '' })
+  createDefaultSuite(project)
 } else {
   seed(project)
 }
 project.setModified(false)
 
-function createDefaultSuite(
-  aProject,
-  name = { suite: 'Default Suite', test: 'Untitled' }
-) {
+function createDefaultSuite(aProject, name = { suite: 'Default Suite', test: 'Untitled' }) {
   const suite = aProject.createSuite(name.suite)
   const test = aProject.createTestCase(name.test)
   suite.addTestCase(test)

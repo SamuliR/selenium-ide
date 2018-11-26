@@ -29,7 +29,7 @@ export default class EditorTabs extends Component {
       UiState.restoreConsoleSize();
     }
     return (
-      <div className='EditorTabs'>
+      <div className='editor-tabs'>
         <div className='buttons-container'>
           {this.state.tabs.map((tab, index) => (
             <div
@@ -42,7 +42,7 @@ export default class EditorTabs extends Component {
             </div>
           ))}
         </div>
-        <div className='editor-container'>
+        <div className='editor-container' style={{ width: '100%', overflowY: 'scroll'}}>
           {this.state.tabs[this.state.currentTab].name === 'Selenium Editor' ?
             <Editor
             url={this.props.url}
