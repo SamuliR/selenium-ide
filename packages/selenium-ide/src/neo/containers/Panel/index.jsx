@@ -304,7 +304,7 @@ export default class Panel extends React.Component {
                 }}
                 load={loadProject.bind(undefined, this.state.project)}
                 save={() => saveProject(this.state.project)}
-                send={() => sendProject(this.state.project)}
+                send={() => sendProject(this.state.project, UiState.displayedTest)}
                 new={this.loadNewProject.bind(this)}
               />
               <div

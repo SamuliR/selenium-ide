@@ -77,13 +77,14 @@ export function saveProject(_project) {
   UiState.saved()
 }
 
-export function sendProject(_project) {
+export function sendProject(_project, _test) {
   const project = _project.toJS()
-  console.log(beautify(JSON.stringify(project), { indent_size: 2 }))
+  const test = project.tests.find(test => test.id === _test.id)
+  console.log(beautify(JSON.stringify(test), { indent_size: 2 }))
   /*
   fetch('https://', {
     method: 'POST',
-    body: beautify(JSON.stringify(project), { indent_size: 2 }),
+    body: beautify(JSON.stringify(test), { indent_size: 2 }),
     headers: { 'Content-Type': 'application/json' }
   })
   .then(res => res.text()) //DELETE
