@@ -6146,9 +6146,9 @@ statuses@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
 
-"step-editor@https://gitlab.com/SamuliR/stepeditor":
+"step-editor@https://github.com/SamuliR/StepEditor":
   version "0.0.1"
-  resolved "https://gitlab.com/SamuliR/stepeditor#7d5ef2a85b070e2f8e593a3fcac01569cab513fe"
+  resolved "https://github.com/SamuliR/StepEditor#7d5ef2a85b070e2f8e593a3fcac01569cab513fe"
   dependencies:
     "@material-ui/core" "^3.0.0"
     "@material-ui/icons" "^3.0.0"

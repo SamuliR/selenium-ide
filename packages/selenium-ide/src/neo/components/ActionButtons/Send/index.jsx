@@ -20,7 +20,6 @@ import ActionButton from '../ActionButton'
 import classNames from 'classnames'
 import './style.css'
 
-//TODO: fix icon
 export default class SendButton extends React.Component {
   render() {
     const props = { ...this.props }
@@ -29,7 +28,7 @@ export default class SendButton extends React.Component {
         data-tip={`<p>Send project <span style="color: #929292;padding-left: 5px;"></span></p>`}
         {...props}
         className={classNames(
-          'si-send',
+          'si-cloud-upload',
           this.props.className
         )}
       /> // eslint-disable-line react/prop-types

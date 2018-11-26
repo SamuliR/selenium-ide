@@ -183,6 +183,6 @@
   content: '\e924';
 }
 
-.si-send::before {
-  content: '\f1d9';
+.si-cloud-upload::before {
+  content: '\e9c3';
 }
