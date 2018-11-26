@@ -34,7 +34,6 @@ import Manager from '../../plugin/manager'
 import chromeGetFile from './filesystem/chrome'
 import firefoxGetFile from './filesystem/firefox'
 import { userAgent as parsedUA } from '../../common/utils'
-
 export const supportedFileFormats = '.side, text/html'
 
 export function getFile(path) {
@@ -157,7 +156,8 @@ function exportProject(project) {
 }
 
 let previousFile = null
-function createBlob(mimeType, data) { // eslint-disable-line
+// eslint-disable-next-line
+function createBlob(mimeType, data) {
   const blob = new Blob([data], {
     type: 'text/plain',
   })
@@ -186,11 +186,15 @@ export function loadProject(project, file) {
         const type = verifyFile(contents)
         if (type === FileTypes.Suite) {
           ModalState.importSuite(contents, files => {
-            loadJSProject(project, migrateProject(files))
+            try {
+              loadJSProject(project, migrateProject(files))
+            } catch (error) {
+              displayError(error)
+            }
           })
         } else if (type === FileTypes.TestCase) {
-          const { test, baseUrl } = migrateTestCase(contents)
-          if (!project.urls.includes(baseUrl)) {
+          let { test, baseUrl } = migrateTestCase(contents)
+          if (project.urls.length && !project.urls.includes(baseUrl)) {
             ModalState.showAlert(
               {
                 title: 'Migrate test case',
