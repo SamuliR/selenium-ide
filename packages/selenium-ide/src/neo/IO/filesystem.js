@@ -80,9 +80,24 @@ export function saveProject(_project) {
 export function sendProject(_project, _test) {
   const project = _project.toJS()
   const test = project.tests.find(test => test.id === _test.id)
+
+  if(test.commands[0].command === 'open' && test.commands[0].target === '' && project.url === ''){
+    ModalState.showAlert({
+      title: 'Error: URL was not provided.',
+      description: "Input a url to the open command at index 1. (or the to url bar at the top)",
+      confirmLabel: 'Close'
+    })
+    return;
+  }
+
+  if(test.commands[0].command === 'open'){
+    test.commands[0].target = project.url
+  }
+
   console.log(beautify(JSON.stringify(test), { indent_size: 2 }))
+
   /*
-  fetch('https://', {
+  fetch('https://localhost:4567', {
     method: 'POST',
     body: beautify(JSON.stringify(test), { indent_size: 2 }),
     headers: { 'Content-Type': 'application/json' }
