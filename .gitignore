@@ -17,3 +17,4 @@ tests/webdriver/
 tests/static/webdriver.js
 .*.swp
 TODO
+build.pem

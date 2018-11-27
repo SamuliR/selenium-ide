@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import UiState from '../../stores/view/UiState'
 import Editor from '../../containers/Editor'
 import StepEditor from 'step-editor'
+import propTypes from 'prop-types'
 
 import './style.css'
 
@@ -19,12 +20,11 @@ export default class EditorTabs extends Component {
           name: 'DnD',
         },
       ],
-      dndSteps: null,
+      dndSteps: [],
     }
   }
 
   saveSteps = steps => {
-    console.log('dndSteps', steps)
     this.setState({ dndSteps: steps })
   }
 
@@ -64,10 +64,17 @@ export default class EditorTabs extends Component {
               callstackIndex={this.props.callstackIndex}
             />
           ) : (
-            <StepEditor saveSteps={this.saveSteps} />
+            <StepEditor
+              saveSteps={this.saveSteps}
+              savedSteps={this.state.dndSteps}
+            />
           )}
         </div>
       </div>
     )
   }
+}
+
+EditorTabs.propTypes = {
+  url: propTypes.string.isRequired,
 }
