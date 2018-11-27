@@ -48,7 +48,12 @@ import Logger from '../../stores/view/Logs'
 
 import EditorTabs from '../../components/EditorTabs'
 
-import { loadProject, saveProject, loadJSProject, sendProject } from '../../IO/filesystem'
+import {
+  loadProject,
+  saveProject,
+  loadJSProject,
+  sendProject,
+} from '../../IO/filesystem'
 
 if (!isTest) {
   const api = require('../../../api')
@@ -71,7 +76,10 @@ if (isProduction) {
 }
 project.setModified(false)
 
-function createDefaultSuite(aProject, name = { suite: 'Default Suite', test: 'Untitled' }) {
+function createDefaultSuite(
+  aProject,
+  name = { suite: 'Default Suite', test: 'Untitled' }
+) {
   const suite = aProject.createSuite(name.suite)
   const test = aProject.createTestCase(name.test)
   suite.addTestCase(test)
@@ -301,7 +309,9 @@ export default class Panel extends React.Component {
                 }}
                 load={loadProject.bind(undefined, this.state.project)}
                 save={() => saveProject(this.state.project)}
-                send={() => sendProject(this.state.project, UiState.displayedTest)}
+                send={() =>
+                  sendProject(this.state.project, UiState.displayedTest)
+                }
                 new={this.loadNewProject.bind(this)}
               />
               <div

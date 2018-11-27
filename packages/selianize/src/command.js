@@ -23,6 +23,7 @@ const emitters = {
   open: emitOpen,
   click: emitClick,
   clickAt: emitClick,
+  clickRandom: emitClickRandom,
   check: emitCheck,
   uncheck: emitUncheck,
   doubleClick: emitDoubleClick,
@@ -113,6 +114,8 @@ const emitters = {
   waitForElementNotVisible: emitWaitForElementNotVisible,
   waitForElementEditable: emitWaitForElementEditable,
   waitForElementNotEditable: emitWaitForElementNotEditable,
+  sleep: emitSleep,
+  scroll: emitScroll
 }
 
 export function emit(command, options = config, snapshot) {
@@ -269,6 +272,22 @@ async function emitClick(target) {
   )
 }
 
+async function emitScroll(target, value){
+   return Promise.resolve(
+      await driver.execute_script(`window.scrollTo(0, ${value})`)
+  )
+}
+
+async function emitClickRandom(target) {
+  return Promise.resolve(
+    `await driver.wait(until.elementLocated(${await LocationEmitter.emit(
+      target
+    )}), configuration.timeout);await driver.findElement(${await LocationEmitter.emit(
+      target
+    )}).then(element => {return element.click();});`
+  )
+}
+
 async function emitDoubleClick(target) {
   return Promise.resolve(
     `await driver.wait(until.elementLocated(${await LocationEmitter.emit(
@@ -375,6 +394,10 @@ async function emitExecuteAsyncScript(script, varName) {
 emitExecuteAsyncScript.target = scriptPreprocessor
 
 async function emitPause(time) {
+  return Promise.resolve(`await driver.sleep(${time});`)
+}
+
+async function emitSleep(time) {
   return Promise.resolve(`await driver.sleep(${time});`)
 }
 

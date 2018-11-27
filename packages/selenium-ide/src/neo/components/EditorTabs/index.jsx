@@ -17,43 +17,55 @@ export default class EditorTabs extends Component {
         },
         {
           name: 'DnD',
-        }
-      ]
+        },
+      ],
+      dndSteps: null,
     }
   }
 
+  saveSteps = steps => {
+    console.log('dndSteps', steps)
+    this.setState({ dndSteps: steps })
+  }
+
   render() {
-    if(this.state.currentTab === 1){
-      UiState.minimizeConsole();
+    if (this.state.currentTab === 1) {
+      UiState.minimizeConsole()
     } else {
-      UiState.restoreConsoleSize();
+      UiState.restoreConsoleSize()
     }
     return (
-      <div className='editor-tabs'>
-        <div className='buttons-container'>
+      <div className="editor-tabs">
+        <div className="buttons-container">
           {this.state.tabs.map((tab, index) => (
             <div
-              className='tab'
+              className="tab"
               key={index}
               onClick={() => this.setState({ currentTab: index })}
-              style={{ backgroundColor: index === this.state.currentTab ? '#F8F8F8' : null}}
+              style={{
+                backgroundColor:
+                  index === this.state.currentTab ? '#F8F8F8' : null,
+              }}
             >
               {tab.name}
             </div>
           ))}
         </div>
-        <div className='editor-container' style={{ width: '100%', overflowY: 'scroll'}}>
-          {this.state.tabs[this.state.currentTab].name === 'Selenium Editor' ?
+        <div
+          className="editor-container"
+          style={{ width: '100%', overflowY: 'scroll' }}
+        >
+          {this.state.currentTab === 0 ? (
             <Editor
-            url={this.props.url}
-            urls={this.props.urls}
-            setUrl={this.props.setUrl}
-            test={this.props.test}
-            callstackIndex={this.props.callstackIndex}
-          />
-          :
-          <StepEditor />
-          }
+              url={this.props.url}
+              urls={this.props.urls}
+              setUrl={this.props.setUrl}
+              test={this.props.test}
+              callstackIndex={this.props.callstackIndex}
+            />
+          ) : (
+            <StepEditor saveSteps={this.saveSteps} />
+          )}
         </div>
       </div>
     )

@@ -45,7 +45,7 @@ export default class ProjectHeader extends React.Component {
     load: PropTypes.func,
     save: PropTypes.func,
     new: PropTypes.func,
-    send: PropTypes.func
+    send: PropTypes.func,
   }
   handleKeyDown(e) {
     if (e.key === 'Enter') {
@@ -85,9 +85,7 @@ export default class ProjectHeader extends React.Component {
             unsaved={this.props.changed}
             onClick={this.props.save}
           />
-          <SendButton
-            onClick={this.props.send}
-          />
+          <SendButton onClick={this.props.send} />
           <ListMenu
             width={250}
             padding={-5}

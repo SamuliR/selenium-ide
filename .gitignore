@@ -2,8 +2,8 @@ web-ext-artifacts
 node_modules
 _MACOSX/
 .DS_Store
-build
 packages/selenium-ide/selenium
+packages/browser-webdriver/build
 .peru
 .idea
 .tern-port
@@ -16,3 +16,4 @@ dist/
 tests/webdriver/
 tests/static/webdriver.js
 .*.swp
+TODO

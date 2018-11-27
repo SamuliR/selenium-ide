@@ -2336,7 +2336,8 @@ BrowserBot.prototype.locateElementByCss = function(locator, document) {
 
 BrowserBot.prototype.locateRandomElementByCss = function(locator, document) {
   let elements = bot.locators.findElements({ css: locator }, document)
-  if (elements.length != 0) return elements[(Math.random() * (elements.length - 0 + 1) ) << 0]
+  if (elements.length != 0)
+    return elements[(Math.random() * (elements.length - 0 + 1)) << 0]
   return null
 }
 

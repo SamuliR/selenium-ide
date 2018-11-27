@@ -286,7 +286,7 @@ class TestRow extends React.Component {
           <ListMenuSeparator />
           <ListMenuItem
             onClick={() => {
-              this.addCommand(this.props.index+1)
+              this.addCommand(this.props.index + 1)
             }}
           >
             Insert new command
@@ -397,12 +397,15 @@ class TestRow extends React.Component {
             cell__alternate: this.props.command.comment,
           })}
         >
-        {this.props.lastRow === false ?
-          <PlayStep
-            className='play-step'
-            onClick={() => { this.props.executeCommand(this.props.command)}}
-          /> : null}
-          <div className='row-name-container'>
+          {this.props.lastRow === false ? (
+            <PlayStep
+              className="play-step"
+              onClick={() => {
+                this.props.executeCommand(this.props.command)
+              }}
+            />
+          ) : null}
+          <div className="row-name-container">
             {commandIndentation}
             <CommandName>{this.props.command.displayedName}</CommandName>
           </div>
@@ -412,22 +415,22 @@ class TestRow extends React.Component {
             cell__alternate: this.props.command.comment,
           })}
         >
-        <div className='row-target-container'>
-          <MultilineEllipsis lines={3}>
-            {this.props.command.target}
-          </MultilineEllipsis>
-        </div>
+          <div className="row-target-container">
+            <MultilineEllipsis lines={3}>
+              {this.props.command.target}
+            </MultilineEllipsis>
+          </div>
         </td>
         <td
           className={classNames({
             cell__alternate: this.props.command.comment,
           })}
         >
-        <div className='row-value-container'>
-          <MultilineEllipsis lines={3}>
-            {this.props.command.value}
-          </MultilineEllipsis>
-        </div>
+          <div className="row-value-container">
+            <MultilineEllipsis lines={3}>
+              {this.props.command.value}
+            </MultilineEllipsis>
+          </div>
         </td>
         <td className="buttons">
           {!this.props.isPristine && !this.props.readOnly ? listMenu : <div />}

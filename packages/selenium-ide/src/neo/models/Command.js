@@ -1258,7 +1258,7 @@ class CommandList {
       {
         name: 'sleep',
         description: 'Waits x amount of seconds before continuing execution.',
-        value: ArgTypes.waitTime
+        value: ArgTypes.waitTime,
       },
     ],
     [
@@ -1266,7 +1266,8 @@ class CommandList {
       {
         name: 'click random',
         type: TargetTypes.LOCATOR,
-        description: 'Finds all the elements matching target and clicks a random one',
+        description:
+          'Finds all the elements matching target and clicks a random one',
         target: ArgTypes.locator,
       },
     ],
@@ -1275,9 +1276,9 @@ class CommandList {
       {
         name: 'scroll',
         description: 'Scrolls page',
-        value: ArgTypes.value
+        value: ArgTypes.value,
       },
-    ]
+    ],
   ])
 
   @computed

@@ -1,6 +1,6 @@
 .editor-tabs {
   width: 100%;
-  margin-bottom: 4.1%;
+  margin-bottom: 3.5%;
 }
 
 .editor-container {
@@ -12,11 +12,11 @@
 
 .buttons-container {
   height: 27px;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
 }
 
 .buttons-container > .tab {
-  border-right: 1px solid #cccccc;
+  border-right: 1px solid #ccc;
   width: 122px;
   text-align: center;
   display: inline-block;

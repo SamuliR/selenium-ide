@@ -18,17 +18,18 @@ module.exports = {
   },
   plugins: ['jest', 'react', 'prettier'],
   rules: {
-    'prettier/prettier': 'error',
-    'react/prop-types': [0],
-    'no-const-assign': 'error',
-    'no-this-before-super': 'error',
-    'no-undef': 'error',
-    'no-unreachable': 'error',
+    'prettier/prettier': 'warn',
+    'react/prop-types': [1],
+    'no-const-assign': 'warn',
+    'no-this-before-super': 'warn',
+    'no-undef': 'warn',
+    'no-unreachable': 'warn',
     'no-unused-vars': [
-      'error',
+      'warn',
       { varsIgnorePattern: '^_', args: 'all', argsIgnorePattern: '^_' },
     ],
-    'constructor-super': 'error',
-    'valid-typeof': 'error',
+    'constructor-super': 'warn',
+    'valid-typeof': 'warn',
+    'no-console': 'warn'
   },
 }

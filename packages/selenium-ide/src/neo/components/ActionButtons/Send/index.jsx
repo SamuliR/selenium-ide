@@ -27,10 +27,7 @@ export default class SendButton extends React.Component {
       <ActionButton
         data-tip={`<p>Send project <span style="color: #929292;padding-left: 5px;"></span></p>`}
         {...props}
-        className={classNames(
-          'si-cloud-upload',
-          this.props.className
-        )}
+        className={classNames('si-cloud-upload', this.props.className)}
       /> // eslint-disable-line react/prop-types
     )
   }

@@ -206,4 +206,4 @@ browser.runtime.onInstalled.addListener(() => {
   }
 })
 
-openPanel({ windowId: 0 });
+openPanel({ windowId: 0 })

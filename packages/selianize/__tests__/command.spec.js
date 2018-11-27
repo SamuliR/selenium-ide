@@ -324,6 +324,16 @@ describe('command code emitter', () => {
       `await driver.sleep(${command.target});`
     )
   })
+  it('should emit `sleep` command', () => {
+    const command = {
+      command: 'sleep',
+      target: '300',
+      value: '',
+    }
+    return expect(CommandEmitter.emit(command)).resolves.toBe(
+      `await driver.sleep(${command.target});`
+    )
+  })
   it('should emit `verify checked` command', () => {
     const command = {
       command: 'verifyChecked',

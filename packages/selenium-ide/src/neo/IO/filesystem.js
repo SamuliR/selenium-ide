@@ -80,16 +80,21 @@ export function sendProject(_project, _test) {
   const project = _project.toJS()
   const test = project.tests.find(test => test.id === _test.id)
 
-  if(test.commands[0].command === 'open' && test.commands[0].target === '' && project.url === ''){
+  if (
+    test.commands[0].command === 'open' &&
+    test.commands[0].target === '' &&
+    project.url === ''
+  ) {
     ModalState.showAlert({
       title: 'Error: URL was not provided.',
-      description: "Input a url to the open command at index 1. (or the to url bar at the top)",
-      confirmLabel: 'Close'
+      description:
+        'Input a url to the open command at index 1. (or the to url bar at the top)',
+      confirmLabel: 'Close',
     })
-    return;
+    return
   }
 
-  if(test.commands[0].command === 'open'){
+  if (test.commands[0].command === 'open') {
     test.commands[0].target = project.url
   }
 
