@@ -7,3 +7,7 @@
 .editor .test-table-body {
   flex-grow: 1;
 }
+
+.editor .toolbar {
+  flex-shrink: 0;
+}

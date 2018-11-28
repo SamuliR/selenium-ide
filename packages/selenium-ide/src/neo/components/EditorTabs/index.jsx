@@ -39,8 +39,8 @@ export default class EditorTabs extends Component {
     }
   }
 
-  mirrorDnD = steps => {
-    this.setState({ dndSteps: sideToDnD(steps) })
+  mirrorDnD = () => {
+    this.setState({ dndSteps: sideToDnD(this.props.test.commands) })
   }
 
   saveSteps = steps => {
@@ -97,6 +97,7 @@ export default class EditorTabs extends Component {
               onPlayStepClick={this.onPlayStepClick}
               saveSteps={this.saveSteps}
               savedSteps={this.state.dndSteps}
+              syncEditor={this.mirrorDnD}
             />
           )}
         </div>

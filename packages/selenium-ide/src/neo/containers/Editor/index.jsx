@@ -80,7 +80,9 @@ export default class Editor extends React.Component {
     }
   }
   render() {
-    this.props.mirrorDnD(this.props.test.commands)
+    if(UiState.isRecording === true){
+      this.props.mirrorDnD()
+    }
     return (
       <main className="editor" onKeyDown={this.handleKeyDown.bind(this)}>
         <ToolBar />
