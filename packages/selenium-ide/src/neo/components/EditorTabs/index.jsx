@@ -4,8 +4,23 @@ import UiState from '../../stores/view/UiState'
 import Editor from '../../containers/Editor'
 import StepEditor from 'step-editor'
 import propTypes from 'prop-types'
+import sideToDnD from '../../../content/sideToDnD'
 
 import './style.css'
+
+/*problems
+>steps arent matched 1:1 so its not possible to mirror them
+perfectly in either direction
+
+>mirroring only works selenium editor -> dnd because dnd
+doesnt have enough commands
+
+>selectors are broken in dnd due to differences in .step and
+dnd step-formats
+
+>url needs to be set in 'open'-commands target field or
+it wont be mirrored over to DnD
+*/
 
 export default class EditorTabs extends Component {
   constructor(props) {
@@ -17,132 +32,27 @@ export default class EditorTabs extends Component {
           name: 'Selenium Editor',
         },
         {
-          name: 'DnD',
+          name: 'Drag&Drop',
         },
       ],
       dndSteps: [],
     }
   }
 
+  mirrorDnD = steps => {
+    this.setState({ dndSteps: sideToDnD(steps) })
+  }
+
   saveSteps = steps => {
-    this.setState({ dndSteps: steps })
+    this.setState({ dndSteps: steps }, console.log(this.state.dndSteps))
   }
 
-  onPlayClick = (steps) => {
+  onPlayClick = steps => {
     console.log('steps:', steps)
-    this.toSide(steps)
   }
 
-  onPlayStepClick = (step) => {
+  onPlayStepClick = step => {
     console.log('step:', step)
-  }
-
-  getTarget = (step) => {
-    switch (step.type) {
-      case 'visit':
-        return step.url
-
-      case 'scroll':
-        return step.amoutPercent
-
-      case 'click':
-        return step.selector
-
-      case 'resolution':
-        return ''
-
-      case 'has-text':
-        return 'document.body' //locator
-
-      case 'input':
-        return step.selector
-
-      case 'key-press':
-        return 'document.body' //locator
-
-      case 'sleep':
-        return ''
-
-      case 'navigation':
-        return ''
-    }
-  }
-
-  getValue = (step) => {
-    switch (step.type) {
-      case 'visit':
-        return ''
-
-      case 'scroll':
-        return step.durationSeconds
-
-      case 'click':
-        return ''
-
-      case 'resolution':
-        return step.resolution
-
-      case 'has-text':
-        return step.text
-
-      case 'input':
-        return step.value
-
-      case 'key-press':
-        return step.keys
-
-      case 'sleep':
-        return step.time
-
-      case 'navigation':
-        return step.action
-    }
-  }
-
-  getCommand = (step) => {
-    switch (step.type) {
-      case 'visit':
-        return 'open'
-
-      case 'scroll':
-        return 'scroll'
-
-      case 'click':
-        return 'click'
-
-      case 'resolution':
-        return '' //no such command
-
-      case 'has-text':
-        return 'verify text'
-
-      case 'input':
-        return 'type'
-
-      case 'key-press':
-        return 'send keys'
-
-      case 'sleep':
-        return 'sleep'
-
-      case 'navigation':
-        return '' //no such command
-    }
-  }
-
-  toSide = (steps) => {
-    const sideTest = []
-    steps.forEach(step => {
-      sideTest.concat({
-        id: step.id,
-        comment: '',
-        command: this.getCommand(step),
-        target: this.getTarget(step),
-        targets: [],
-        value: this.getValue(step),
-      })
-    })
-    console.log("sideTest", sideTest)
   }
 
   render() {
@@ -179,6 +89,7 @@ export default class EditorTabs extends Component {
               setUrl={this.props.setUrl}
               test={this.props.test}
               callstackIndex={this.props.callstackIndex}
+              mirrorDnD={this.mirrorDnD}
             />
           ) : (
             <StepEditor
