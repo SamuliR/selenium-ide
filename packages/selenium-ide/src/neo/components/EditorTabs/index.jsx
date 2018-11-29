@@ -49,10 +49,12 @@ export default class EditorTabs extends Component {
 
   onPlayClick = steps => {
     console.log('steps:', steps)
+    this.props.send(steps)
   }
 
   onPlayStepClick = step => {
     console.log('step:', step)
+    this.props.send(step)
   }
 
   render() {

@@ -52,7 +52,8 @@ import {
   loadProject,
   saveProject,
   loadJSProject,
-  sendProject,
+  sendToSuperbot,
+  superbotifyProject,
 } from '../../IO/filesystem'
 
 if (!isTest) {
@@ -309,8 +310,7 @@ export default class Panel extends React.Component {
                 }}
                 load={loadProject.bind(undefined, this.state.project)}
                 save={() => saveProject(this.state.project)}
-                send={() =>
-                  sendProject(this.state.project, UiState.displayedTest)
+                send={() => sendToSuperbot(superbotifyProject(this.state.project, UiState.displayedTest))
                 }
                 new={this.loadNewProject.bind(this)}
               />
@@ -339,6 +339,7 @@ export default class Panel extends React.Component {
                     setUrl={this.state.project.setUrl}
                     test={UiState.displayedTest}
                     callstackIndex={UiState.selectedTest.stack}
+                    send={sendToSuperbot}
                   />
                 </SplitPane>
               </div>

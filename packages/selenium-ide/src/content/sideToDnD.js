@@ -7,13 +7,29 @@ export default (steps) => {
       timeout: 10,
     }
     newStep = stepTargetValue(step, newStep)
-    if(newStep !== null) {
+    if (newStep !== null) {
       dndSteps.push(newStep)
     } else {
       return
     }
   })
   return dndSteps
+}
+
+const getCssSelector = (stepTargets, targets) => {
+  switch (stepTargets[targets][1]) {
+    case 'id':
+      return '#' + stepTargets[targets][0].slice(3, stepTargets[targets][0].length)
+
+    case 'css:finder':
+      return stepTargets[targets][0].slice(4, stepTargets[targets][0].length)
+
+    case 'linkText':
+      return getCssSelector(stepTargets, 1)
+
+    case 'name':
+      return getCssSelector(stepTargets, 1)
+  }
 }
 
 const stepTargetValue = (step, newStep) => {
@@ -26,12 +42,12 @@ const stepTargetValue = (step, newStep) => {
     case 'scroll':
       newStep.type = 'scroll'
       newStep.amountPercent = Math.round(step.value / 10) * 10
-      newStep.durationSeconds = step.target || 2
+      newStep.durationSeconds = step.target || 2
       return newStep
 
     case 'click':
       newStep.type = 'click'
-      newStep.selector = step.target
+      newStep.selector = getCssSelector(step.targets, 0)
       newStep.leftClick = true
       return newStep
 
@@ -42,7 +58,7 @@ const stepTargetValue = (step, newStep) => {
 
     case 'type':
       newStep.type = 'input'
-      newStep.selector = step.target
+      newStep.selector = getCssSelector(step.targets, 0)
       newStep.value = step.value
       return newStep
 

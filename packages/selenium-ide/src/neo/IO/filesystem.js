@@ -36,6 +36,8 @@ import firefoxGetFile from './filesystem/firefox'
 import { userAgent as parsedUA } from '../../common/utils'
 export const supportedFileFormats = '.side, text/html'
 
+import sideToDnD from '../../content/sideToDnD'
+
 export function getFile(path) {
   const browserName = parsedUA.browser.name
   return (() => {
@@ -76,10 +78,11 @@ export function saveProject(_project) {
   UiState.saved()
 }
 
-export function sendProject(_project, _test) {
+export const superbotifyProject = (_project, _test) => {
   const project = _project.toJS()
   const test = project.tests.find(test => test.id === _test.id)
 
+  //make sure that url is defined in the test header or in the first open-command
   if (
     test.commands[0].command === 'open' &&
     test.commands[0].target === '' &&
@@ -97,19 +100,17 @@ export function sendProject(_project, _test) {
   if (test.commands[0].command === 'open') {
     test.commands[0].target = project.url
   }
+  console.log(test.commands)
+  return sideToDnD(test.commands)
+}
 
+export function sendToSuperbot(test) {
   console.log(beautify(JSON.stringify(test), { indent_size: 2 }))
-
-  /*
-  fetch('https://localhost:4567', {
+  fetch('http://localhost:4567/__superbot/v1/convert', {
     method: 'POST',
     body: beautify(JSON.stringify(test), { indent_size: 2 }),
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
   })
-  .then(res => res.text()) //DELETE
-  .then(body => console.log("body", body)) //DELETE
-  .catch(error => console.log('Failed to send project:', error))
-  */
 }
 
 function downloadProject(project) {
