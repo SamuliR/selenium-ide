@@ -66,6 +66,7 @@ const emitters = {
   storeText: emitStoreText,
   storeValue: emitStoreValue,
   storeTitle: emitStoreTitle,
+  storeWindowHandle: emitStoreWindowHandle,
   storeXpathCount: emitStoreXpathCount,
   storeAttribute: emitStoreAttribute,
   select: emitSelect,
@@ -128,6 +129,7 @@ export function emit(command, options = config, snapshot) {
           preprocessParameter(command.target, emitters[command.command].target),
           preprocessParameter(command.value, emitters[command.command].value)
         )
+        if (command.opensWindow) result = emitNewWindowHandling(result, command)
         res(result)
       } catch (e) {
         rej(e)
@@ -155,6 +157,14 @@ function preprocessParameter(param, preprocessor) {
     return preprocessor(param)
   }
   return defaultPreprocessor(param)
+}
+
+function emitNewWindowHandling(emitted, command) {
+  return `vars.__handles = await driver.getAllWindowHandles();${emitted}vars.${
+    command.windowHandleName
+  } = await utils.waitForWindow(driver, vars.__handles, ${
+    command.windowTimeout
+  });`
 }
 
 function defaultPreprocessor(param) {
@@ -555,6 +565,12 @@ async function emitStoreTitle(_, varName) {
   )
 }
 
+async function emitStoreWindowHandle(varName) {
+  return Promise.resolve(
+    `await driver.getWindowHandle().then(handle => {return vars["${varName}"] = handle;});`
+  )
+}
+
 async function emitStoreXpathCount(locator, varName) {
   return Promise.resolve(
     `await driver.findElements(${await LocationEmitter.emit(
@@ -606,7 +622,13 @@ async function emitSelectFrame(frameLocation) {
 }
 
 async function emitSelectWindow(windowLocation) {
-  if (/^name=/.test(windowLocation)) {
+  if (/^handle=/.test(windowLocation)) {
+    return Promise.resolve(
+      `await driver.switchTo().window(\`${
+        windowLocation.split('handle=')[1]
+      }\`);`
+    )
+  } else if (/^name=/.test(windowLocation)) {
     return Promise.resolve(
       `await driver.switchTo().window(\`${windowLocation.split('name=')[1]}\`);`
     )
@@ -623,32 +645,13 @@ async function emitSelectWindow(windowLocation) {
     }
   } else {
     return Promise.reject(
-      new Error('Can only emit `select window` using name locator')
+      new Error('Can only emit `select window` using handles')
     )
   }
 }
 
-async function emitClose(windowLocation) {
-  if (/^name=/.test(windowLocation)) {
-    return Promise.resolve(
-      `await driver.switchTo().window(\`${
-        windowLocation.split('name=')[1]
-      }\`);await driver.close();`
-    )
-  } else if (/^win_ser_/.test(windowLocation)) {
-    if (windowLocation === 'win_ser_local') {
-      return Promise.resolve(
-        'await driver.switchTo().window((await driver.getAllWindowHandles())[0]);await driver.close();'
-      )
-    } else {
-      const index = parseInt(windowLocation.substr('win_ser_'.length))
-      return Promise.resolve(
-        `await driver.switchTo().window((await driver.getAllWindowHandles())[${index}]);await driver.close();`
-      )
-    }
-  } else {
-    return Promise.reject(new Error('Can only emit `close` using name locator'))
-  }
+async function emitClose() {
+  return Promise.resolve(`await driver.close();`)
 }
 
 async function emitMouseDown(locator) {
@@ -808,9 +811,9 @@ function emitSetSpeed() {
 }
 
 function emitSetWindowSize(size) {
-  // not this is not the case with WebDriver 4.0, it is driver.manage().window().setRect({ width, height })
+  const [width, height] = size.split('x')
   return Promise.resolve(
-    `await driver.manage().window().setSize(...(\`${size}\`.split("x").map((s) => parseInt(s))));`
+    `await driver.manage().window().setRect({ width: ${width}, height: ${height} });`
   )
 }
 

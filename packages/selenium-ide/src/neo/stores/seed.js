@@ -528,6 +528,31 @@ export default function seed(store, numberOfSuites = 0) {
     ''
   )
 
+  const selectWindow = store.createTestCase('select window')
+  selectWindow.createCommand(undefined, 'open', '/')
+  selectWindow.createCommand(undefined, 'storeWindowHandle', 'handle')
+  selectWindow.createCommand(undefined, 'echo', '${handle}')
+  const click = selectWindow.createCommand(
+    undefined,
+    'click',
+    'linkText=Elemental Selenium'
+  )
+  click.setOpensWindow(true)
+  click.setWindowHandleName('newWindow')
+  selectWindow.createCommand(undefined, 'assertTitle', 'The Internet')
+  selectWindow.createCommand(undefined, 'selectWindow', 'handle=${handle}')
+  selectWindow.createCommand(undefined, 'assertTitle', 'The Internet')
+  selectWindow.createCommand(undefined, 'selectWindow', 'handle=${newWindow}')
+  selectWindow.createCommand(
+    undefined,
+    'assertTitle',
+    'Elemental Selenium: Receive a Free, Weekly Tip on Using Selenium like a Pro'
+  )
+  selectWindow.createCommand(undefined, 'close')
+  selectWindow.createCommand(undefined, 'selectWindow', 'handle=${handle}')
+  selectWindow.createCommand(undefined, 'assertTitle', 'The Internet')
+  selectWindow.createCommand(undefined, 'close')
+
   const suiteAll = store.createSuite('all tests')
   store.tests.forEach(function(test) {
     suiteAll.addTestCase(test)
@@ -566,7 +591,7 @@ export default function seed(store, numberOfSuites = 0) {
   UiState.changeView('Test suites')
   let suiteState = UiState.getSuiteState(suiteAll)
   suiteState.setOpen(true)
-  UiState.selectTest(suiteAll.tests[0], suiteAll)
+  UiState.selectTest(clickTest, suiteAll)
 
   store.changeName('seed project')
 

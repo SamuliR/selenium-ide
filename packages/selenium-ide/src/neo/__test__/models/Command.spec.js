@@ -121,6 +121,35 @@ describe('Command', () => {
     const command = new Command(undefined, '//open')
     expect(command.displayedName).toBe('open')
   })
+  it('by default should not open a new window', () => {
+    const command = new Command()
+    expect(command.opensWindow).toBeFalsy()
+  })
+  it('should generate a window handle variable name, when set to open a window', () => {
+    const command = new Command()
+    command.setOpensWindow(true)
+    expect(command.windowHandleName).not.toBe('')
+    expect(command.opensWindow).toBeTruthy()
+  })
+  it('should unset the command opens window', () => {
+    const command = new Command()
+    command.setOpensWindow(true)
+    command.setOpensWindow(false)
+    expect(command.opensWindow).toBeFalsy()
+  })
+  it('should set the default timeout when set to open a window', () => {
+    const command = new Command()
+    command.setOpensWindow(true)
+    expect(command.windowTimeout).toBe(2000)
+  })
+  it('should set the handle name and the new window timeout', () => {
+    const command = new Command()
+    command.setOpensWindow(true)
+    command.setWindowHandleName('aWindow')
+    expect(command.windowHandleName).toBe('aWindow')
+    command.setWindowTimeout(500)
+    expect(command.windowTimeout).toBe(500)
+  })
   it('shouls clone itself, creating a new id', () => {
     const command = new Command()
     command.setComment('test')
@@ -129,6 +158,7 @@ describe('Command', () => {
     command.setTargets([['button', 'xpath']])
     command.setValue('submit')
     command.toggleBreakpoint()
+    command.setOpensWindow(true)
     const clone = command.clone()
     expect(clone).not.toBe(command)
     expect(clone.id).not.toBe(command.id)
@@ -137,6 +167,9 @@ describe('Command', () => {
     expect(clone.target).toBe(command.target)
     expect(clone.targets).toEqual(command.targets)
     expect(clone.value).toBe(command.value)
+    expect(clone.opensWindow).toBe(command.opensWindow)
+    expect(clone.windowHandleName).toBe(command.windowHandleName)
+    expect(clone.windowTimeout).toBe(command.windowTimeout)
     expect(clone.isBreakpoint).toBeFalsy()
   })
 
@@ -148,6 +181,9 @@ describe('Command', () => {
       target: '/',
       targets: [['button', 'xpath']],
       value: 'test',
+      opensWindow: true,
+      windowHandleName: 'testWindow',
+      windowTimeout: 2000,
     }
     const command = Command.fromJS(jsRepresentation)
     expect(command.id).toBe(jsRepresentation.id)
@@ -158,6 +194,9 @@ describe('Command', () => {
     expect(command.targets[0][1]).toBe('xpath')
     expect(command.value).toBe(jsRepresentation.value)
     expect(command.isBreakpoint).toBeFalsy()
+    expect(command.opensWindow).toBeTruthy()
+    expect(command.windowHandleName).toBe(jsRepresentation.windowHandleName)
+    expect(command.windowTimeout).toBe(jsRepresentation.windowTimeout)
     expect(command instanceof Command).toBeTruthy()
   })
 })

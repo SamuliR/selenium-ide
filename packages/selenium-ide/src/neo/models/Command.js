@@ -19,6 +19,8 @@ import { action, computed, observable, toJS } from 'mobx'
 import uuidv4 from 'uuid/v4'
 import Fuse from 'fuse.js'
 
+const DEFAULT_NEW_WINDOW_TIMEOUT = 2000
+
 export default class Command {
   id = null
   @observable
@@ -33,6 +35,12 @@ export default class Command {
   value
   @observable
   isBreakpoint = false
+  @observable
+  opensWindow = false
+  @observable
+  windowHandleName = ''
+  @observable
+  windowTimeout = DEFAULT_NEW_WINDOW_TIMEOUT
 
   constructor(id = uuidv4(), command, target, value) {
     this.id = id
@@ -94,6 +102,26 @@ export default class Command {
   }
 
   @action.bound
+  setOpensWindow(opensWindow) {
+    if (typeof opensWindow == typeof true) {
+      this.opensWindow = opensWindow
+      if (!this.windowHandleName) {
+        this.windowHandleName = `win${Math.floor(Math.random() * 10000)}`
+      }
+    }
+  }
+
+  @action.bound
+  setWindowHandleName(name) {
+    this.windowHandleName = name
+  }
+
+  @action.bound
+  setWindowTimeout(timeout) {
+    this.windowTimeout = timeout
+  }
+
+  @action.bound
   toggleBreakpoint() {
     this.isBreakpoint = !this.isBreakpoint
   }
@@ -114,10 +142,16 @@ export default class Command {
     this.setTarget(jsRep.target)
     this.setTargets(jsRep.targets)
     this.setValue(jsRep.value)
+
+    if (jsRep.opensWindow) {
+      this.setOpensWindow(jsRep.opensWindow)
+      this.setWindowHandleName(jsRep.windowHandleName)
+      this.setWindowTimeout(jsRep.windowTimeout)
+    }
   }
 
   export() {
-    return {
+    let exported = {
       id: this.id,
       comment: this.comment,
       command: this.command,
@@ -125,6 +159,14 @@ export default class Command {
       targets: toJS(this.targets),
       value: this.value,
     }
+
+    if (this.opensWindow) {
+      exported.opensWindow = this.opensWindow
+      exported.windowHandleName = this.windowHandleName
+      exported.windowTimeout = this.windowTimeout
+    }
+
+    return exported
   }
 
   static fromJS = function(jsRep) {
@@ -180,6 +222,10 @@ export const ArgTypes = {
   formLocator: {
     name: 'form locator',
     description: 'An element locator for the form you want to submit.',
+  },
+  handle: {
+    name: 'window handle',
+    description: 'A handle representing a specific page (tab, or window).',
   },
   keySequence: {
     name: 'key sequence',
@@ -270,10 +316,6 @@ export const ArgTypes = {
   waitTime: {
     name: 'wait time',
     description: 'The amount of time to wait (in milliseconds).',
-  },
-  window: {
-    name: 'window',
-    description: 'The id of the browser window to select.',
   },
   xpath: {
     name: 'xpath',
@@ -825,18 +867,18 @@ class CommandList {
         description:
           'Selects a popup window using a window locator. Once a popup \
                     window has been selected, all commands will go to that window. \
-                    To select the main window again, use null as the target. \
-                    Window locators provide different ways of specifying the window \
-                    object: by title or by generated id.',
-        target: ArgTypes.window,
+                    Window locators use handles to select windows.',
+        target: ArgTypes.handle,
       },
     ],
     [
       'close',
       {
         name: 'close',
-        description: 'Closes a window using a window locator.',
-        target: ArgTypes.window,
+        description:
+          'Closes the current window. \
+                    There is no need to close the initial window, IDE will re-use it; \
+                    closing it may cause a performance penalty on the test.',
       },
     ],
     [
@@ -930,6 +972,14 @@ class CommandList {
       {
         name: 'store title',
         description: 'Gets the title of the current page.',
+      },
+    ],
+    [
+      'storeWindowHandle',
+      {
+        name: 'store window handle',
+        descript: 'Gets the handle of the current page.',
+        target: ArgTypes.handle,
       },
     ],
     [

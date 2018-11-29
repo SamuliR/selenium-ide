@@ -20,14 +20,16 @@
 import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
+import util from 'util'
 import { fork } from 'child_process'
 import program from 'commander'
 import winston from 'winston'
 import glob from 'glob'
 import rimraf from 'rimraf'
 import { js_beautify as beautify } from 'js-beautify'
-import Selianize from 'selianize'
+import Selianize, { getUtilsFile } from 'selianize'
 import Capabilities from './capabilities'
+import ParseProxy from './proxy'
 import Config from './config'
 import Satisfies from './versioner'
 import metadata from '../package.json'
@@ -53,12 +55,24 @@ program
     `The maximimum amount of time, in milliseconds, to spend attempting to locate an element. (default: ${DEFAULT_TIMEOUT})`
   )
   .option(
+    '--proxy-type [type]',
+    'Type of proxy to use (one of: direct, manual, pac, socks, system)'
+  )
+  .option(
+    '--proxy-options [list]',
+    'Proxy options to pass, for use with manual, pac and socks proxies'
+  )
+  .option(
     '--configuration-file [filepath]',
     'Use specified YAML file for configuration. (default: .side.yml)'
   )
   .option(
     '--output-directory [directory]',
     'Write test results to files, results written in JSON'
+  )
+  .option(
+    '--force',
+    "Forcibly run the project, regardless of project's version"
   )
   .option('--debug', 'Print debug logs')
 
@@ -98,12 +112,12 @@ const configuration = {
   path: path.join(__dirname, '../../'),
 }
 
-const configurationFilePath = program.configurationFile || '.side.yml'
+const confPath = program.configurationFile || '.side.yml'
+const configurationFilePath = path.isAbsolute(confPath)
+  ? confPath
+  : path.join(process.cwd(), confPath)
 try {
-  Object.assign(
-    configuration,
-    Config.load(path.join(process.cwd(), configurationFilePath))
-  )
+  Object.assign(configuration, Config.load(configurationFilePath))
 } catch (e) {
   winston.debug('Could not load ' + configurationFilePath)
 }
@@ -121,10 +135,7 @@ if (configuration.timeout === 'undefined') configuration.timeout = undefined
 
 if (program.capabilities) {
   try {
-    Object.assign(
-      configuration.capabilities,
-      Capabilities.parseString(program.capabilities)
-    )
+    configuration.capabilities = Capabilities.parseString(program.capabilities)
   } catch (e) {
     winston.debug('Failed to parse inline capabilities')
   }
@@ -132,12 +143,34 @@ if (program.capabilities) {
 
 if (program.params) {
   try {
-    Object.assign(
-      configuration.params,
-      Capabilities.parseString(program.params)
-    )
+    configuration.params = Capabilities.parseString(program.params)
   } catch (e) {
     winston.debug('Failed to parse additional params')
+  }
+}
+
+if (program.proxyType) {
+  try {
+    let opts = program.proxyOptions
+    if (program.proxyType === 'manual' || program.proxyType === 'socks') {
+      opts = Capabilities.parseString(opts)
+    }
+    const proxy = ParseProxy(program.proxyType, opts)
+    Object.assign(configuration, proxy)
+  } catch (e) {
+    winston.error(e.message)
+    process.exit(1)
+  }
+} else if (configuration.proxyType) {
+  try {
+    const proxy = ParseProxy(
+      configuration.proxyType,
+      configuration.proxyOptions
+    )
+    Object.assign(configuration, proxy)
+  } catch (e) {
+    winston.error(e.message)
+    process.exit(1)
   }
 }
 
@@ -145,18 +178,24 @@ configuration.baseUrl = program.baseUrl
   ? program.baseUrl
   : configuration.baseUrl
 
+winston.debug(util.inspect(configuration))
+
 let projectPath
 
 function runProject(project) {
   winston.info(`Running ${project.path}`)
-  let warning
-  try {
-    warning = Satisfies(project.version, '1.1')
-  } catch (e) {
-    return Promise.reject(e)
-  }
-  if (warning) {
-    winston.warn(warning)
+  if (!program.force) {
+    let warning
+    try {
+      warning = Satisfies(project.version, '2.0')
+    } catch (e) {
+      return Promise.reject(e)
+    }
+    if (warning) {
+      winston.warn(warning)
+    }
+  } else {
+    winston.warn("--force is set, ignoring project's version")
   }
   if (!project.suites.length) {
     return Promise.reject(
@@ -172,19 +211,23 @@ function runProject(project) {
   fs.mkdirSync(projectPath)
   fs.writeFileSync(
     path.join(projectPath, 'package.json'),
-    JSON.stringify({
-      name: project.name,
-      version: '0.0.0',
-      jest: {
-        modulePaths: [path.join(__dirname, '../node_modules')],
-        setupTestFrameworkScriptFile: require.resolve(
-          'jest-environment-selenium/dist/setup.js'
-        ),
-        testEnvironment: 'jest-environment-selenium',
-        testEnvironmentOptions: configuration,
+    JSON.stringify(
+      {
+        name: project.name,
+        version: '0.0.0',
+        jest: {
+          modulePaths: [path.join(__dirname, '../node_modules')],
+          setupTestFrameworkScriptFile: require.resolve(
+            'jest-environment-selenium/dist/setup.js'
+          ),
+          testEnvironment: 'jest-environment-selenium',
+          testEnvironmentOptions: configuration,
+        },
+        dependencies: project.dependencies || {},
       },
-      dependencies: project.dependencies || {},
-    })
+      null,
+      2
+    )
   )
 
   return Selianize(project, { silenceErrors: true }, project.snapshot).then(
@@ -192,9 +235,10 @@ function runProject(project) {
       const tests = code.tests
         .reduce((tests, test) => {
           return (tests += test.code)
-        }, 'const tests = {};')
+        }, 'const utils = require("./utils.js");const tests = {};')
         .concat('module.exports = tests;')
       writeJSFile(path.join(projectPath, 'commons'), tests, '.js')
+      writeJSFile(path.join(projectPath, 'utils'), getUtilsFile(), '.js')
       code.suites.forEach(suite => {
         if (!suite.tests) {
           // not parallel
@@ -268,7 +312,10 @@ function runJest(project) {
           ? [
               '--json',
               '--outputFile',
-              path.join(program.outputDirectory, `${project.name}.json`),
+              path.isAbsolute(program.outputDirectory)
+                ? path.join(program.outputDirectory, `${project.name}.json`)
+                : '../' +
+                  path.join(program.outputDirectory, `${project.name}.json`),
             ]
           : []
       )

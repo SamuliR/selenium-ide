@@ -43,6 +43,8 @@ class UiState {
   @observable
   isRecording = false
   @observable
+  lastRecordedCommand = null
+  @observable
   isSelectingTarget = false
   @observable
   windowHeight = window.innerHeight
@@ -346,6 +348,7 @@ class UiState {
     try {
       await this.recorder.attach(startingUrl)
       this._setRecordingState(true)
+      this.lastRecordedCommand = null
       await this.emitRecordingState()
     } catch (err) {
       ModalState.showAlert({

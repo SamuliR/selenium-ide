@@ -30,7 +30,7 @@ export default {
 }
 
 function matchStringPairs(input) {
-  const regex = /([^ =]*) ?= ?(".*"|[^ ]*)/g
+  const regex = /([^ =]*) ?= ?(".*"|\[.*\]|[^ ]*)/g
   let result
   const splitCapabilities = []
   while ((result = regex.exec(input)) !== null) {
@@ -54,11 +54,19 @@ function assignStringKey(key, value) {
 function parseStringValue(value) {
   // is array
   if (/^\[.*\]$/.test(value)) {
-    return value.match(/((\w|-)*)/g).filter(s => !!s)
+    return value
+      .substr(1, value.length - 2)
+      .match(/(([^,]*)*)/g)
+      .filter(s => !!s)
+      .map(s => s.trim())
   }
   try {
-    return JSON.parse(value)
+    let parsed = JSON.parse(value)
+    if (typeof parsed === 'string') {
+      parsed = parsed.trim()
+    }
+    return parsed
   } catch (e) {
-    return value
+    return value.trim()
   }
 }
