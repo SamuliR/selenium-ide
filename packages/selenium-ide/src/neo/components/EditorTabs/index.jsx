@@ -8,20 +8,6 @@ import sideToDnD from '../../../content/sideToDnD'
 
 import './style.css'
 
-/*problems
->steps arent matched 1:1 so its not possible to mirror them
-perfectly in either direction
-
->mirroring only works selenium editor -> dnd because dnd
-doesnt have enough commands
-
->selectors are broken in dnd due to differences in .step and
-dnd step-formats
-
->url needs to be set in 'open'-commands target field or
-it wont be mirrored over to DnD
-*/
-
 export default class EditorTabs extends Component {
   constructor(props) {
     super(props)
@@ -45,16 +31,6 @@ export default class EditorTabs extends Component {
 
   saveSteps = steps => {
     this.setState({ dndSteps: steps }, console.log(this.state.dndSteps))
-  }
-
-  onPlayClick = steps => {
-    console.log('steps:', steps)
-    this.props.send(steps)
-  }
-
-  onPlayStepClick = step => {
-    console.log('step:', step)
-    this.props.send(step)
   }
 
   render() {
@@ -95,11 +71,10 @@ export default class EditorTabs extends Component {
             />
           ) : (
             <StepEditor
-              onPlayClick={this.onPlayClick}
-              onPlayStepClick={this.onPlayStepClick}
               saveSteps={this.saveSteps}
               savedSteps={this.state.dndSteps}
               syncEditor={this.mirrorDnD}
+              send={this.props.send}
             />
           )}
         </div>

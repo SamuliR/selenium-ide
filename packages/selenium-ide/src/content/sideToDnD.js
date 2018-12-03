@@ -25,10 +25,10 @@ const getCssSelector = (stepTargets, targets) => {
       return stepTargets[targets][0].slice(4, stepTargets[targets][0].length)
 
     case 'linkText':
-      return getCssSelector(stepTargets, 1)
+      return getCssSelector(stepTargets, ++targets)
 
     case 'name':
-      return getCssSelector(stepTargets, 1)
+      return getCssSelector(stepTargets, ++targets)
   }
 }
 
