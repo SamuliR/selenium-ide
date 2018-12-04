@@ -30,6 +30,8 @@ script:
   - yarn test:webdriver
   - yarn test:runner --server http://localhost:4444/wd/hub --force
 deploy:
+  on:
+    branch: master
   provider:
     - yarn bump:ext:version
     - yarn build:ext:prod
