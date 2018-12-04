@@ -4,7 +4,10 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
+	"update:ext:store": "cd packages/selenium-ide && ./update.sh",
     "start": "cd packages/selenium-ide && yarn start",
+	"zip:ext": "cd packages/selenium-ide && yarn zip:ext",
+	"bump:ext:version": "cd packages/selenium-ide && yarn bump-version",
     "build": "lerna run build --ignore selenium-ide-extension-boilerplate",
     "build:ext": "cd packages/selenium-ide && yarn build-dev",
     "build:runner": "cd packages/selenium-side-runner && yarn build",

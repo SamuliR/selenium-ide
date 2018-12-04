@@ -8,6 +8,8 @@ cache:
 node_js:
   - "10"
   - "8"
+env:
+  - EXTENSION_ID=ncpaajkkckeifkjmdcljncclojbniiig
 services:
   - docker
 before_install:
@@ -29,3 +31,11 @@ script:
   - yarn test
   - yarn test:webdriver
   - yarn test:runner --server http://localhost:4444/wd/hub --force
+deploy:
+  on:
+    branch: master
+  provider:
+    - yarn bump:ext:version
+    - yarn build:ext:prod
+    - yarn zip:ext
+    - CLIENT_ID=${clieintID} CLIENT_SECRET=${clientSecret} REFRESH_TOKEN=${refreshToken} yarn update:ext:store
