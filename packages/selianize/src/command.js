@@ -26,6 +26,7 @@ const emitters = {
   clickRandom: emitClickRandom,
   check: emitCheck,
   uncheck: emitUncheck,
+  debugger: emitDebugger,
   doubleClick: emitDoubleClick,
   doubleClickAt: emitDoubleClick,
   dragAndDropToObject: emitDragAndDrop,
@@ -283,8 +284,8 @@ async function emitClick(target) {
 }
 
 async function emitScroll(target, value){
-   return Promise.resolve(
-      await driver.execute_script(`window.scrollTo(0, ${value})`)
+  return Promise.resolve(
+    `await driver.execute_script('window.scrollTo(0, ${value})')`
   )
 }
 
@@ -296,6 +297,10 @@ async function emitClickRandom(target) {
       target
     )}).then(element => {return element.click();});`
   )
+}
+
+async function emitDebugger() {
+  return Promise.resolve('debugger;')
 }
 
 async function emitDoubleClick(target) {
