@@ -370,6 +370,10 @@ export default class ExtCommand {
     this.windowSession.setOpenedWindow(tab.windowId)
   }
 
+  async doDebugger() {
+    await PlaybackState.break()
+  }
+
   doOpen(targetUrl) {
     const url = absolutifyUrl(targetUrl, this.baseUrl)
     return browser.tabs
@@ -811,6 +815,7 @@ export default class ExtCommand {
 
   isExtCommand(command) {
     switch (command) {
+      case 'debugger':
       case 'pause':
       case 'open':
       case 'selectFrame':
