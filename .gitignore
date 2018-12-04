@@ -1,9 +1,14 @@
+.travis.yml.copy
+packages/selenium-ide/local_update.sh
+packages/selenium-ide/src/content/dndToSide.js
 web-ext-artifacts
 node_modules
 _MACOSX/
 .DS_Store
 packages/selenium-ide/selenium
+packages/selenium-ide/build/
 packages/browser-webdriver/build
+build/
 .peru
 .idea
 .tern-port
