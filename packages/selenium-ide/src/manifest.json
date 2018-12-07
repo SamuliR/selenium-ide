@@ -4,7 +4,7 @@
   "name": "Selenium IDE",
   "version": "3.5.2",
   "version_name": "3.5.2",
-  "homepage_url": "https://github.com/SeleniumHQ/selenium-ide",
+  "homepage_url": "https://github.com/SamuliR/selenium-ide",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -57,7 +57,8 @@
         "assets/polyfills.js",
         "assets/escape.js",
         "assets/playback.js",
-        "assets/record.js"
+        "assets/record.js",
+        "assets/elementSelector.js"
       ],
       "match_about_blank": true,
       "all_frames": true

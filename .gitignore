@@ -21,5 +21,6 @@ dist/
 tests/webdriver/
 tests/static/webdriver.js
 .*.swp
-TODO
 build.pem
+packages/selenium-ide/src/content/dndToSide.js
+packages/selenium-ide/local_update.sh

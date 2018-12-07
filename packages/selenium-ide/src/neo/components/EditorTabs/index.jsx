@@ -5,6 +5,7 @@ import Editor from '../../containers/Editor'
 import StepEditor from 'step-editor'
 import propTypes from 'prop-types'
 import sideToDnD from '../../../content/sideToDnD'
+import { getActiveTabForTest } from '../../IO/SideeX/find-select'
 
 import './style.css'
 
@@ -31,6 +32,12 @@ export default class EditorTabs extends Component {
 
   saveSteps = steps => {
     this.setState({ dndSteps: steps }, console.log(this.state.dndSteps))
+  }
+
+  getTab = async () => {
+    //send message to tab to start selecting
+    const tab = await getActiveTabForTest()
+    return tab
   }
 
   render() {
@@ -71,6 +78,7 @@ export default class EditorTabs extends Component {
             />
           ) : (
             <StepEditor
+              getTab={this.getTab}
               saveSteps={this.saveSteps}
               savedSteps={this.state.dndSteps}
               syncEditor={this.mirrorDnD}

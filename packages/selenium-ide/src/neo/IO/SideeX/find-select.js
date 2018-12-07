@@ -23,7 +23,7 @@ import WindowSession from '../../IO/window-session'
 import { TargetTypes } from '../../models/Command'
 import Region from '../../models/Region'
 
-async function getActiveTabForTest() {
+export async function getActiveTabForTest() {
   const identifier = WindowSession.currentUsedWindowId[
     UiState.selectedTest.test.id
   ]

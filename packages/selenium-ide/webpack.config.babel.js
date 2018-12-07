@@ -34,6 +34,7 @@ export default {
     background: ['./background/background'],
     record: ['./content/record'],
     escape: ['./content/escape'],
+    elementSelector: ['./content/elementSelector'],
     neo: ['react-hot-loader/patch', './neo/containers/Root'],
   },
   output: {
