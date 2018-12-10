@@ -17,6 +17,9 @@ export default (steps) => {
 }
 
 const getCssSelector = (stepTargets, targets) => {
+  if(stepTargets[0] === undefined){
+    return 'undefined'
+  }
   switch (stepTargets[targets][1]) {
     case 'id':
       return '#' + stepTargets[targets][0].slice(3, stepTargets[targets][0].length)
@@ -29,6 +32,9 @@ const getCssSelector = (stepTargets, targets) => {
 
     case 'name':
       return getCssSelector(stepTargets, ++targets)
+
+    default:
+      return 'undefined'
   }
 }
 
@@ -47,9 +53,13 @@ const stepTargetValue = (step, newStep) => {
 
     case 'click':
       newStep.type = 'click'
-      newStep.selector = getCssSelector(step.targets, 0)
       newStep.leftClick = true
-      return newStep
+      newStep.selector = getCssSelector(step.targets, 0)
+      if(newStep.selector === undefined){
+        return null
+      } else {
+        return newStep
+      }
 
     case 'assert text':
       newStep.type = 'has-text'
@@ -58,11 +68,15 @@ const stepTargetValue = (step, newStep) => {
 
     case 'type':
       newStep.type = 'input'
-      newStep.selector = getCssSelector(step.targets, 0)
       newStep.value = step.value
-      return newStep
+      newStep.selector = getCssSelector(step.targets, 0)
+      if(newStep.selector === undefined){
+        return null
+      } else {
+        return newStep
+      }
 
-    case 'sleep':
+      case 'sleep':
       newStep.type = 'sleep'
       newStep.time = step.value
       return newStep

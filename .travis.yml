@@ -7,7 +7,6 @@ cache:
   - ".peru"
 node_js:
 - '10'
-- '8'
 services:
 - docker
 before_install:
@@ -35,4 +34,4 @@ deploy:
     secure: AeOrNaaRmsZRH8X1jxljiIxY8qAz7tUxhlKUWq/GmaH9mKM/N2uogNA9AtPy1Eb4SdehNBcMuNC1jQVE+QG7tMFDdBwAKiWItVEPAdTLAbo8ox4wi/IgaDxoZnaUSQhjgKqNvTRwuaP85UiQ3j7+7GhkGLxa/Q0kSk17VWfEJdIJ6aVAeHHxSUYeHAk2Duhs01aNchOago4gDN6x30fETbIDGJJNfXn05DwbpbQ7Ju8Pz8RqaJzqfLm8ziIuPZ0+Qq5l2v95By8GMakdFEvwqspZzCxXut197xA8sTxxiyabGBsQZjYO3djqyD/jGHeoc8zNOXVSWsQvRerfrT9T12B6/sR/0LHWnGsCBtwOWHA5uEvYryFDbtjIKxZ/pTd3+4teGLT51oAmSk+nWZmIK2igpF/rTUxpFA//EQR8onFBdT48lS9SlCo9070ZWb4A7E10ttaq9dLT5KUknQO1CQfcQ3vfyKUHZeGiXJF4OhyKWQU10GqVjVia0KO04Id3AosQH/BzhSq3e648RHKUj+fg52c/e99dva10elBrQ+wgwctYZh8ChQ04ybQzX38l7E2c/SyqBNsFoP2R5Op99kITIJo0GxC8LJ7C+vsJJfdM1pToS08oSDJ0etbCdfOCVANuvB82rIrl5SNieEtmaBAVaWnfYqjxIcl01CqAqIY=
   file: packages/selenium-ide/build.crx
   on:
-    repo: SamuliR/selenium-ide
+    tags: true
