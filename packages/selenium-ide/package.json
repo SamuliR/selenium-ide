@@ -1,14 +1,13 @@
 {
   "name": "selenium-ide-extension",
-  "version": "3.5.3",
+  "version": "3.5.4",
   "description": "An integrated development environment for Selenium scripts",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "start": "env NODE_ENV=test webpack-dev-server --hot",
     "build": "rm -rf build && env NODE_ENV=production webpack",
-    "zip:ext": "zip -r build/build.zip build/",
-    "bump-version": "yarn version --patch",
+    "bump:version": "yarn version --patch",
     "build-dev": "webpack",
     "build-chrome": "./build.sh build ../../selenium-ide.pem 1>/dev/null && mkdir -p dist && mv build.crx dist/selenium-ide.crx && echo \"Wrote dist/selenium-ide.crx\"",
     "build-firefox": "web-ext sign -s build -a dist --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET --id=$(cat ../../.web-extension-id)",
