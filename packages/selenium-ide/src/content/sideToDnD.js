@@ -1,4 +1,4 @@
-export default (steps) => {
+export default (steps, baseUrl) => {
   const dndSteps = []
   steps.forEach(step => {
     let newStep = {
@@ -6,7 +6,7 @@ export default (steps) => {
       id: step.id,
       timeout: 10,
     }
-    newStep = stepTargetValue(step, newStep)
+    newStep = stepTargetValue(step, newStep, baseUrl)
     if (newStep !== null) {
       dndSteps.push(newStep)
     } else {
@@ -18,7 +18,8 @@ export default (steps) => {
 
 const getCssSelector = (stepTargets, targets) => {
   if(stepTargets[0] === undefined){
-    return 'undefined'
+    console.log('Warning! Step selector undefined!')
+    return undefined
   }
   switch (stepTargets[targets][1]) {
     case 'id':
@@ -34,15 +35,16 @@ const getCssSelector = (stepTargets, targets) => {
       return getCssSelector(stepTargets, ++targets)
 
     default:
-      return 'undefined'
+      console.log('Warning! Step selector undefined, targets!')
+      return undefined
   }
 }
 
-const stepTargetValue = (step, newStep) => {
+const stepTargetValue = (step, newStep, baseUrl) => {
   switch (step.command) {
     case 'open':
       newStep.type = 'visit'
-      newStep.url = step.target
+      newStep.url = baseUrl ? baseUrl : 'undefined'
       return newStep
 
     case 'scroll':

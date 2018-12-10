@@ -27,7 +27,7 @@ export default class EditorTabs extends Component {
   }
 
   mirrorDnD = () => {
-    this.setState({ dndSteps: sideToDnD(this.props.test.commands) })
+    this.setState({ dndSteps: sideToDnD(this.props.test.commands, this.props.url) })
   }
 
   saveSteps = steps => {
